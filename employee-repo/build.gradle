@@ -38,6 +38,7 @@ dependencies {
   api project(':employee-model')
   implementation project(':employee-domain')
   implementation project(':base-arch')
+  implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
 
   implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
   implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"

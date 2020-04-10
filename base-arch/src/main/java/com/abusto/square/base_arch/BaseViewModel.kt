@@ -13,7 +13,7 @@ import io.reactivex.Observable
  * to.
  * @param S The [BaseViewState] the [BaseViewModel] will be emitting.
  */
-interface BaseViewModel<I : BaseIntent, S : BaseViewState> {
+interface BaseViewModel<I : BaseIntent, A: BaseAction, E: BaseEvent, S : BaseViewState> {
 
     /**
      * This is our ONE entry point for our
@@ -21,4 +21,7 @@ interface BaseViewModel<I : BaseIntent, S : BaseViewState> {
     fun listenForIntents(intents: Observable<I>)
     fun initialIntents(): Observable<I>
     fun states(): LiveData<S>
+
+    fun mapIntentToAction(intent: I): A
+    fun mapEventToAction(intent: E): A { TODO () }
 }
