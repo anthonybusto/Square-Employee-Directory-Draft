@@ -25,4 +25,6 @@ interface BaseView<I : BaseIntent, in S : BaseViewState> {
      * the only ONE entry point into the [BaseView]]
      */
     fun render(state: S)
+
+    fun viewEffects(effect: ViewEffect<*>)
 }

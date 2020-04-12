@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abusto.square.base_arch.BaseView
+import com.abusto.square.base_arch.ViewEffect
 import com.abusto.square.employees.R
 import com.abusto.square.employees.RecyclerViewActivity
 import com.abusto.square.employees.extensions.hide
@@ -21,9 +22,10 @@ import kotlinx.android.synthetic.main.layout_recycler_view.*
 import org.koin.android.ext.android.getKoin
 
 
-class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory), BaseView<EmployeeDirectoryIntent, EmployeeDirectoryViewState> {
+class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
+        BaseView<EmployeeDirectoryIntent, EmployeeDirectoryViewState> {
 
-    private val viewModel: EmployeeDirectoryViewModel by viewModels { EmployeeDirectoryViewModelactory(getKoin()) }
+    private val viewModel: EmployeeDirectoryViewModel by viewModels { EmployeeDirectoryViewModelFactory(getKoin()) }
 
     private val mainActivity: RecyclerViewActivity? get() = activity as? RecyclerViewActivity
 
@@ -92,8 +94,13 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = this.adapter
         recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        mainActivity?.let { viewModel.states().observe(it, Observer(::render)) }
-        viewModel.listenForIntents(intents())
+        with(viewModel) {
+            mainActivity?.let { activity ->
+                states().observe(activity, Observer(::render))
+                viewEffects().observe(activity, Observer { effect -> viewEffects(effect) })
+            }
+            listenForIntents(intents())
+        }
     }
 
     /**
@@ -124,12 +131,22 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
         }
     }
 
+
     private fun renderContentState(state: EmployeeDirectoryViewState) {
         adapter.update(state.toGroups(), true)
         adapter.setOnItemClickListener { item, view ->
             employeeClicks.onNext(EmployeeDirectoryIntent.EmployeeClicked(item.toString()))
         }
     }
+
+    /**
+     * Examples of ViewEffects are things that affect the view but are not truly part of
+     * the view's overall 'state'. These can be things like navigation, toasts, dialogs, etc.
+     */
+    override fun viewEffects(effect: ViewEffect<*>) {
+        //TODO: Implement these if/when needed
+    }
+
 
     companion object {
         fun newInstance() = EmployeeDirectoryFragment()

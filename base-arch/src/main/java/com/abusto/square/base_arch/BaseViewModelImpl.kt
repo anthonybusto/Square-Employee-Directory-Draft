@@ -12,28 +12,15 @@ import io.reactivex.subjects.PublishSubject
  * @author: Anthony Busto
  * @date:   2020-04-10
  */
-abstract class BaseViewModelImpl<I : BaseIntent,
-//        A : BaseAction,
-//        E : BaseEvent,
-        S : BaseViewState,
-        R: BaseResult
-        > :
-        BaseViewModel<I, S>,// BaseViewModel<I, E, S>, //BaseViewModel<I, A, E, S>,
-        ViewModel() {
+abstract class BaseViewModelImpl<I : BaseIntent, S : BaseViewState, A: BaseAction, R: BaseResult>
+    : BaseViewModel<I, S>, ViewModel() {
 
     private val disposables = CompositeDisposable()
     private val intentsSubject: PublishSubject<I> = PublishSubject.create()
-//    private val eventsSubject: PublishSubject<E> = PublishSubject.create()
     private val eventsSubject: PublishSubject<BaseEvent> = PublishSubject.create()
     private val statesObservable: Observable<S> by lazy { initStream() }
     private val states: MutableLiveData<S> = MutableLiveData()
-
-//    abstract val reducer : BiFunction<S,R,S>
-//    abstract val reducer : BiFunction<S,BaseResult,S>
-
-//    abstract val reducers : Map<KClass<BaseResult>, BiFunction<S,BaseResult,S>>
-
-//    abstract val reducers : Map<Class<*>, Reducer<S, BaseResult>>
+    private val viewEffects: MutableLiveData<ViewEffect<*>> = MutableLiveData()
     abstract val reducers : Map<Class<*>, Reducer<S, R>>
 
     override fun listenForIntents(intents: Observable<I>) {
@@ -45,13 +32,9 @@ abstract class BaseViewModelImpl<I : BaseIntent,
         return states
     }
 
-//    abstract fun processors(): Array<ProcessorResult<R,E>>
+    override fun viewEffects(): LiveData<ViewEffect<*>> = viewEffects
 
-//    abstract fun processors(): Array<BaseProcessor<R,E>>
-    abstract fun processors(): Array<BaseProcessor<R>>
-//    abstract fun processors(): Array<BaseProcessor<BaseResult>>
-//    abstract fun processors(): Array<BaseProcessor>
-
+    abstract fun processors(): Array<BaseProcessor<A, R>>
     abstract fun initialState(): S
 
     private fun initStream(): Observable<S> {
@@ -65,8 +48,8 @@ abstract class BaseViewModelImpl<I : BaseIntent,
 
         return intentToAction
                 .mergeWith(eventToAction)
-//                .compose(processors()[0].actionProcessor)
                 .compose { action ->
+                    //Process all actions across all processor
                     val streams = processors()
                             .map { p -> p.actionProcessor.apply(action) }
                             .toList()
@@ -81,11 +64,28 @@ abstract class BaseViewModelImpl<I : BaseIntent,
                   leverage RxJava to cache of ViewStates for us
                  */
                 .scan(initialState(), { state, processorResult ->
+
+                    /**
+                     * Send any events that came from this past action as a [ProcessorResult]
+                     * and then send it back down the pipe. Events can be mapped to actions,
+                     * so that one [BaseProcessor] can communicate with another. This allows
+                     * us to modularize the application into reusable processors that can
+                     * not only be reused, but can communicate clearly and easily with one
+                     * another.
+                     */
                     processorResult.events.forEach(eventsSubject::onNext)
                     val reducer= reducers[processorResult.rType]
-                    reducer?.reduce?.apply(state, processorResult.result) ?: state
+//                    reducer?.reduce?.apply(state, processorResult.result) ?: state
+                    val reducerResult = reducer?.reduce?.apply(state, processorResult.result)
+                    val newState = reducerResult?.state ?: state
+                    newState.also {
+                        reducerResult
+                                ?.viewEffectSet
+                                ?.forEach(viewEffects::postValue)
+                    }
 
                 })
+
                 /*
                   When the reducer emits the exact same previousState again, there is no reason at all to
                   pass this down stream to the view. Actually, it can hurt sometimes where
