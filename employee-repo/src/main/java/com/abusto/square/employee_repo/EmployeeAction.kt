@@ -1,7 +1,6 @@
 package com.abusto.square.employee_repo
 
 import com.abusto.square.base_arch.BaseAction
-import java.util.*
 
 /**
  * @author: Anthony Busto
@@ -10,5 +9,5 @@ import java.util.*
 
 sealed class EmployeeAction : BaseAction {
     object LoadEmployees : EmployeeAction()
-    data class EmployeeClicked(val uuid: String): EmployeeAction()
+    data class OnEmployeeClicked(val uuid: String): EmployeeAction()
 }

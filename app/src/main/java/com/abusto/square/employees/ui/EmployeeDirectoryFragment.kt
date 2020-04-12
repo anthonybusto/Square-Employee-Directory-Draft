@@ -15,6 +15,7 @@ import com.abusto.square.employees.extensions.show
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_employee_directory.*
 import kotlinx.android.synthetic.main.layout_recycler_view.*
 import org.koin.android.ext.android.getKoin
@@ -28,6 +29,8 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
 
     private val adapter
        get() = recycler_view.adapter as? GroupAdapter ?: GroupAdapter<GroupieViewHolder>()
+
+    private val employeeClicks: PublishSubject<EmployeeDirectoryIntent> = PublishSubject.create()
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -100,8 +103,7 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
      */
     override fun intents(): Observable<EmployeeDirectoryIntent> = employeeClicks()
 
-    private fun employeeClicks(): Observable<EmployeeDirectoryIntent> =
-        Observable.just(EmployeeDirectoryIntent.EmployeeClicked(""))
+    private fun employeeClicks(): Observable<EmployeeDirectoryIntent> = employeeClicks
 
     /**
      * This is the only entry point into this [BaseView]. The @parameter for
@@ -124,6 +126,9 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
 
     private fun renderContentState(state: EmployeeDirectoryViewState) {
         adapter.update(state.toGroups(), true)
+        adapter.setOnItemClickListener { item, view ->
+            employeeClicks.onNext(EmployeeDirectoryIntent.EmployeeClicked(item.toString()))
+        }
     }
 
     companion object {

@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="@dimen/employee_item_outer_margin"
+    android:background="?selectableItemBackground"
+    app:cardCornerRadius="@dimen/employee_item_card_corner_radius"
+    app:cardElevation="@dimen/employee_item_card_elevation"
+    app:contentPadding="@dimen/employee_item_card_padding"
+    >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
 
     <ImageView
         android:id="@+id/employee_icon"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        />
 
     <TextView
         android:id="@+id/employee_name"
         android:layout_width="0dp"
-        android:text="Hello World"
-        android:layout_marginLeft="10dp"
-        android:paddingTop="10dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/employee_name_margin_start"
+        android:paddingTop="10dp"
+        android:text="Hello World"
+        android:textSize="@dimen/employee_name_text_size"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/employee_icon"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -30,13 +42,16 @@
     <TextView
         android:id="@+id/employee_team"
         android:layout_width="0dp"
-        android:text="Hello World"
-        android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/employee_name_margin_start"
+        android:text="Hello World"
+        android:textSize="@dimen/employee_team_text_size"
         app:layout_constraintLeft_toRightOf="@+id/employee_icon"
         app:layout_constraintTop_toBottomOf="@id/employee_name"
-
         />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

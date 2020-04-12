@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.abusto.square.base_arch.BaseViewModel
+import com.abusto.square.base_arch.*
 import com.abusto.square.employee_repo.*
 import com.abusto.square.employees.data.toEmployeeImpl
 import io.reactivex.Observable
@@ -14,13 +14,53 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.koin.core.Koin
+import kotlin.reflect.KClass
+
 
 /**
  * @author: Anthony Busto
  * @date:   2020-04-08
  */
+class EmployeeDirectoryViewModel constructor(private val processor: EmployeeProcessor) :
+        BaseViewModelImpl<EmployeeDirectoryIntent, EmployeeDirectoryViewState, EmployeeResult>() {
+
+    override fun initialIntents(): Observable<EmployeeDirectoryIntent> = Observable.just(EmployeeDirectoryIntent.InitialIntent)
+
+    override fun initialState(): EmployeeDirectoryViewState = EmployeeDirectoryViewState()
+
+    override fun processors(): Array<BaseProcessor<EmployeeResult>> = arrayOf(processor)
+
+    override val reducers: EmployeeReducerMap = mutableMapOf<Class<*>, Reducer<EmployeeDirectoryViewState, EmployeeResult>>()
+            .apply {
+                val employeeEmployeeReducer = EmployeeReducer()
+                this[employeeEmployeeReducer.type] = employeeEmployeeReducer
+            }
+    /**
+     * Used to decouple the UI and the business logic to allow easy testings and reusability.
+     */
+    override fun mapIntentToAction(intent: EmployeeDirectoryIntent): EmployeeAction {
+        return when (intent) {
+            is EmployeeDirectoryIntent.InitialIntent   -> EmployeeAction.LoadEmployees
+            is EmployeeDirectoryIntent.EmployeeClicked -> EmployeeAction.OnEmployeeClicked(intent.uuid)
+        }
+    }
 
 
+}
+
+
+typealias EmployeeReducerMap = Map<Class<*>, Reducer<EmployeeDirectoryViewState, EmployeeResult>>
+
+
+class EmployeeDirectoryViewModelactory(private val koin: Koin) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            koin.get<EmployeeDirectoryViewModel>() as T
+
+}
+
+
+/*
 class EmployeeDirectoryViewModel constructor(private val processor: EmployeeProcessor) : ViewModel(),
     BaseViewModel<EmployeeDirectoryIntent, EmployeeAction, EmployeeEvent, EmployeeDirectoryViewState> {
 
@@ -202,3 +242,6 @@ class EmployeeDirectoryViewModelactory(private val koin: Koin) : ViewModelProvid
         koin.get<EmployeeDirectoryViewModel>() as T
 
 }
+
+*/
+

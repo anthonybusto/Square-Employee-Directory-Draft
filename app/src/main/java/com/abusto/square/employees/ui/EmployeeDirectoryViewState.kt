@@ -14,7 +14,5 @@ data class EmployeeDirectoryViewState(val isLoading: Boolean = true,
 
 
 fun EmployeeDirectoryViewState.toGroups() : List<Group> = listOf(
-    Section().apply {
-        addAll(employees.map(::EmployeeRowItem))
-    }
+    Section().apply { addAll(employees.map(::EmployeeRowItem)) }
 )

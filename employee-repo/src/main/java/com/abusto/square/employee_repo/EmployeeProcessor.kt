@@ -1,16 +1,17 @@
 package com.abusto.square.employee_repo
 
-import com.abusto.square.base_arch.BaseProcessor
-import com.abusto.square.base_arch.ProcessorResult
+import com.abusto.square.base_arch.*
 import com.abusto.square.employee_repo.EmployeeAction.LoadEmployees
 import com.abusto.square.employee_repo.EmployeeResult.LoadEmployeesResult
+import com.abusto.square.employee_repo.EmployeeAction.OnEmployeeClicked
+import com.abusto.square.employee_repo.EmployeeResult.EmployeeClickResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+class EmployeeProcessor(private val employeeRepo: EmployeeRepository) : BaseProcessor<EmployeeResult> {
 
-class EmployeeProcessor(private val employeeRepo: EmployeeRepository) : BaseProcessor {
 
     private val loadEmployees = ObservableTransformer<LoadEmployees, LoadEmployeesResult>
     { actions ->
@@ -27,12 +28,31 @@ class EmployeeProcessor(private val employeeRepo: EmployeeRepository) : BaseProc
     }
 
 
+    private val doOnEmployeeClicked = ObservableTransformer<OnEmployeeClicked, EmployeeClickResult>
+    { actions ->
+        actions.flatMap { action ->
+            Observable.just(EmployeeClickResult.Success(action.uuid))
+        }
 
-    val actionProcessor = ObservableTransformer<EmployeeAction, ProcessorResult<EmployeeResult, EmployeeEvent>> { actions ->
+    }
+
+
+
+    //override val actionProcessor = ObservableTransformer<BaseAction, ProcessorResult<EmployeeResult>> { actions ->
+    override val actionProcessor = ObservableTransformer<BaseAction, ProcessorResult<EmployeeResult>> { actions ->
         actions.publish { shared ->
-            shared.ofType(LoadEmployees::class.java)
-                .compose(loadEmployees).cast(EmployeeResult::class.java)
-                .map { ProcessorResult(it, setOf()) }
+            Observable.merge(
+                    shared.ofType(LoadEmployees::class.java)
+                            .compose(loadEmployees)
+                            .cast(EmployeeResult::class.java)
+                            .map { ProcessorResult(it) },
+
+                    shared.ofType(OnEmployeeClicked::class.java)
+                            .compose(doOnEmployeeClicked)
+                            .cast(EmployeeClickResult::class.java)
+                            .map { ProcessorResult(it) }
+
+            )
         }
     }
 }
