@@ -37,7 +37,6 @@ dependencies {
 
     implementation project(':employee-repo')
     implementation project(':employee-domain')
-    implementation project(':app-local')
     implementation project(':base-arch')
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -50,6 +49,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
+    //For multi-type adapter
     implementation "com.xwray:groupie:$groupie_version"
 
     // ViewModel
@@ -75,34 +75,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
 
+    //Gson for JSON parsing
     implementation "com.google.code.gson:gson:$gson_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-//    /* Android Architecture Component - Room Persistance Lib  */
-//    implementation "android.arch.persistence.room:runtime:$room_version"
-//    implementation "android.arch.persistence.room:rxjava2:$room_version"
-////    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
-//
-//    implementation "android.arch.persistence.room:runtime:$room_version"
-//    kapt "android.arch.persistence.room:compiler:$room_version"
-//
-//
-//    // RxJava support for Room
-//    implementation "android.arch.persistence.room:rxjava2:$room_version"
-//    // Testing support
-//    androidTestImplementation "android.arch.core:core-testing:$room_version"
-
-    /* Dagger2 - We are going to use dagger.android which includes
-     * support for Activity and fragment injection so we need to include
-     * the following dependencies */
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    /* Dagger2 - default dependency */
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_compiler_version"
-
-    implementation 'org.koin:koin-android:2.0.1'
 
     // Testing
     testImplementation 'junit:junit:4.12'
@@ -110,7 +86,23 @@ dependencies {
     testImplementation "io.mockk:mockk:1.9"
 
 
+    /* Glide for image processing */
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+
+    /* Android Architecture Component - Room Persistance Lib  */
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+
+
+    // RxJava support for Room
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
+    // Testing support
+    androidTestImplementation "android.arch.core:core-testing:$room_version"
 
 }

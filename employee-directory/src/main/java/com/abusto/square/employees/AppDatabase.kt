@@ -1,4 +1,4 @@
-package com.abusto.square.app_local
+package com.abusto.square.employees
 
 import android.content.Context
 import androidx.room.Database
@@ -8,10 +8,6 @@ import com.abusto.square.employee_model_local.EmployeeDao
 import com.abusto.square.employee_model_local.EmployeeLocal
 import java.util.concurrent.Executors
 
-/**
- * @author: Anthony Busto
- * @date:   2020-04-08
- */
 @Database(entities = [EmployeeLocal::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun employeeDao(): EmployeeDao
@@ -24,7 +20,8 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun create(context: Context) = synchronized(AppDatabase::class.java) {
             Room.databaseBuilder(context,
-                                 AppDatabase::class.java, DATABASE_NAME)
+                                 AppDatabase::class.java,
+                DATABASE_NAME)
                     .allowMainThreadQueries()
                     .setQueryExecutor(databaseWriteExecutor)
                     .build()
