@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/employee-directory" />
+            <option value="$PROJECT_DIR$/employee-application" />
             <option value="$PROJECT_DIR$/employee-domain" />
             <option value="$PROJECT_DIR$/employee-model" />
             <option value="$PROJECT_DIR$/employee-model-local" />
