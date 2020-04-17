@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/base-arch" />
+            <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/employee-directory" />
             <option value="$PROJECT_DIR$/employee-domain" />
             <option value="$PROJECT_DIR$/employee-model" />
