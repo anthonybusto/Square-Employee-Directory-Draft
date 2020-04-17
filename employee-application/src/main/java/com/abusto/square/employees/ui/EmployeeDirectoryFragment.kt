@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abusto.square.base_arch.BaseView
 import com.abusto.square.base_arch.ViewEffect
 import com.abusto.square.employees.R
-import com.abusto.square.employees.RecyclerViewActivity
+import com.abusto.square.employees.MainActivity
 import com.abusto.square.employees.extensions.hide
 import com.abusto.square.employees.extensions.show
 import com.xwray.groupie.GroupAdapter
@@ -27,7 +27,7 @@ class EmployeeDirectoryFragment: Fragment(R.layout.fragment_employee_directory),
 
     private val viewModel: EmployeeDirectoryViewModel by viewModels { EmployeeDirectoryViewModelFactory(getKoin()) }
 
-    private val mainActivity: RecyclerViewActivity? get() = activity as? RecyclerViewActivity
+    private val mainActivity: MainActivity? get() = activity as? MainActivity
 
     private val adapter
        get() = recycler_view.adapter as? GroupAdapter ?: GroupAdapter<GroupieViewHolder>()

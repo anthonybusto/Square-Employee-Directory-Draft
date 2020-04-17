@@ -6,12 +6,6 @@ import com.abusto.square.employee_model_local.EmployeeDatabase
 import com.abusto.square.employee_domain.Employee
 import io.reactivex.Observable
 
-
-/**
- * @author: Anthony Busto
- * @date:   2020-04-08
- */
-
 class EmployeeRepository constructor(private val employeeApi: EmployeeApi,
                                      private val employeeDatabase: EmployeeDatabase) {
 

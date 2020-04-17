@@ -1,7 +1,6 @@
 package com.abusto.square.employee_api
 
 
-//import com.abusto.square.employee_model_local.Employee
 import com.abusto.square.employee_domain.Employee
 import com.google.gson.annotations.SerializedName
 

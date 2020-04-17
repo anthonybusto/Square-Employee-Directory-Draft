@@ -1,7 +1,5 @@
 package com.abusto.square.employees.ui
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.abusto.square.base_arch.BaseProcessor
 import com.abusto.square.base_arch.BaseViewModelImpl
 import com.abusto.square.base_arch.Reducer
@@ -9,7 +7,6 @@ import com.abusto.square.employee_repo.EmployeeAction
 import com.abusto.square.employee_repo.EmployeeProcessor
 import com.abusto.square.employee_repo.EmployeeResult
 import io.reactivex.Observable
-import org.koin.core.Koin
 
 
 class EmployeeDirectoryViewModel constructor(private val processor: EmployeeProcessor) :
@@ -35,13 +32,3 @@ class EmployeeDirectoryViewModel constructor(private val processor: EmployeeProc
 }
 
 typealias EmployeeReducerMap = Map<Class<*>, Reducer<EmployeeDirectoryViewState, EmployeeResult>>
-
-
-class EmployeeDirectoryViewModelFactory(private val koin: Koin) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-            koin.get<EmployeeDirectoryViewModel>() as T
-
-}
-
-

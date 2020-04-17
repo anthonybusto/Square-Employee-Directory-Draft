@@ -2,10 +2,6 @@ package com.abusto.square.employees.data
 
 import com.abusto.square.employee_domain.Employee
 
-/**
- * @author: Anthony Busto
- * @date:   2020-04-08
- */
 data class EmployeeImpl(override val uuid: String,
                         override val biography: String,
                         override val emailAddress: String,

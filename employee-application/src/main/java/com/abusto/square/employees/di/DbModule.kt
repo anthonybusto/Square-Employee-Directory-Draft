@@ -8,10 +8,10 @@ import org.koin.dsl.module
 val dbModule = module {
 
     // Room Database
-    factory { AppDatabase.create(androidApplication()) }
+    single { AppDatabase.create(androidApplication()) }
 
-    factory { EmployeeDatabase(get()) }
+    single { EmployeeDatabase(get()) }
 
     //Employee DAO
-    factory { get<AppDatabase>().employeeDao() }
+    single { get<AppDatabase>().employeeDao() }
 }

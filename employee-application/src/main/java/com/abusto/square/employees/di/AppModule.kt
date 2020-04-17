@@ -21,11 +21,10 @@ val appModule = module {
 
     single { PreferenceResolver(get()) }
 
-//    factory { EmployeeRepository(get(), get(), get()) }
-    factory { EmployeeRepository(get(), get()) }
+    single { EmployeeRepository(get(), get()) }
 
     factory { EmployeeProcessor(get()) }
-//
+
     factory { EmployeeDirectoryViewModel(get()) }
 
 }

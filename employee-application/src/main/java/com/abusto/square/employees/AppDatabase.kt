@@ -18,13 +18,19 @@ abstract class AppDatabase : RoomDatabase() {
         private const val THREAD_COUNT = 5
         private val databaseWriteExecutor = Executors.newFixedThreadPool(THREAD_COUNT)
 
-        fun create(context: Context) = synchronized(AppDatabase::class.java) {
-            Room.databaseBuilder(context,
-                                 AppDatabase::class.java,
-                DATABASE_NAME)
-                    .allowMainThreadQueries()
-                    .setQueryExecutor(databaseWriteExecutor)
-                    .build()
-        }
+//        fun create(context: Context) = synchronized(AppDatabase::class.java) {
+//            Room.databaseBuilder(context,
+//                                 AppDatabase::class.java,
+//                DATABASE_NAME)
+//                    .setQueryExecutor(databaseWriteExecutor)
+//                    .build()
+//        }
+
+
+        fun create(context: Context) = Room.databaseBuilder(context,
+            AppDatabase::class.java,
+            DATABASE_NAME)
+            .setQueryExecutor(databaseWriteExecutor)
+            .build()
     }
 }
