@@ -1,4 +1,4 @@
-package com.abusto.square.employees.ui
+package com.abusto.square.employees.vieweffects
 
 import android.content.Context
 import android.content.Intent

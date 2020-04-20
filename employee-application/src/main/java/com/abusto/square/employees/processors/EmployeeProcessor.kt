@@ -1,10 +1,11 @@
-package com.abusto.square.employee_repo
+package com.abusto.square.employees.processors
 
 import com.abusto.square.base_arch.*
-import com.abusto.square.employee_repo.EmployeeAction.LoadEmployees
-import com.abusto.square.employee_repo.EmployeeResult.LoadEmployeesResult
-import com.abusto.square.employee_repo.EmployeeAction.OnEmployeeClicked
-import com.abusto.square.employee_repo.EmployeeResult.EmployeeClickResult
+import com.abusto.square.employees.processors.EmployeeAction.LoadEmployees
+import com.abusto.square.employees.processors.EmployeeResult.LoadEmployeesResult
+import com.abusto.square.employees.processors.EmployeeAction.OnEmployeeClicked
+import com.abusto.square.employee_repo.EmployeeRepository
+import com.abusto.square.employees.processors.EmployeeResult.EmployeeClickResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers

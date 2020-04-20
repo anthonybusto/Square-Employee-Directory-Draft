@@ -2,14 +2,14 @@ package com.abusto.square.employees.ui
 
 import com.abusto.square.base_arch.Reducer
 import com.abusto.square.base_arch.ReducerResult
-import com.abusto.square.employee_repo.EmployeeResult
+import com.abusto.square.employees.processors.EmployeeResult
 import com.abusto.square.employees.data.toEmployeeImpl
 import io.reactivex.functions.BiFunction
 
 
 class EmployeeReducer: Reducer<EmployeeDirectoryViewState, EmployeeResult>() {
 
-    override val type: Class<*> = EmployeeResult::class.java// as KClass<*>
+    override val type: Class<*> = EmployeeResult::class.java
 
     override val reduce: BiFunction<EmployeeDirectoryViewState, EmployeeResult, ReducerResult<EmployeeDirectoryViewState>>
         get() = BiFunction { previousState: EmployeeDirectoryViewState, result: EmployeeResult ->

@@ -3,9 +3,9 @@ package com.abusto.square.employees.ui
 import com.abusto.square.base_arch.BaseProcessor
 import com.abusto.square.base_arch.BaseViewModelImpl
 import com.abusto.square.base_arch.Reducer
-import com.abusto.square.employee_repo.EmployeeAction
-import com.abusto.square.employee_repo.EmployeeProcessor
-import com.abusto.square.employee_repo.EmployeeResult
+import com.abusto.square.employees.processors.EmployeeAction
+import com.abusto.square.employees.processors.EmployeeProcessor
+import com.abusto.square.employees.processors.EmployeeResult
 import io.reactivex.Observable
 
 
