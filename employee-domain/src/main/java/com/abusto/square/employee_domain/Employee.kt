@@ -1,9 +1,5 @@
 package com.abusto.square.employee_domain
 
-/**
- * @author: Anthony Busto
- * @date:   2020-04-08
- */
 interface Employee {
 
     val uuid: String

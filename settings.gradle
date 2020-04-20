@@ -1,2 +1,2 @@
-include ':app', ':employee-model', ':employee-model-local', ':app-local', ':employee-repo', ':employee-domain', ':employee-domain', ':employee-domain', ':base-arch'
+include ':employee-application', ':employee-model', ':employee-model-local', ':employee-repository', ':employee-domain', ':employee-domain', ':employee-domain', ':core'
 rootProject.name='Square Employee Directory'
